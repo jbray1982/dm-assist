@@ -4,8 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A Dungeon Master's assistant for D&D 5e, grounded in the 5e SRD (https://www.5esrd.com).
-It runs locally in a browser and blends three kinds of capability:
+A Dungeon Master's assistant for D&D 5e, grounded in the 5e SRD — specifically **SRD 5.2.1**
+(the 2024 rules, released under CC-BY-4.0). It runs locally in a browser and blends three kinds
+of capability:
 
 - **Procedural** — deterministic math and algorithms (dice, dungeon generation, CR math).
 - **Generative** — LLM-authored content (narrative beats, NPCs, monster variants).
@@ -68,6 +69,13 @@ generation is grounded. The dice roller is both a DM-facing feature and an LLM-c
 
 **SRD Content Corpus.** The ingested SRD grounds both procedural and generative work.
 Monster variants derive from real base stat blocks; items derive from real item rules.
+The SRD is ingested as a *structured domain model* in SQLite, not a text blob — a monster's
+AC is a number and its hit points are a dice expression the roll engine can evaluate. It is
+also the single provenance-tagged home for everything stat-block-shaped: SRD records, derived
+variants, and DM homebrew live in one schema, distinguished by `provenance` and `parent_id`
+rather than by living in separate stores. Every record carries a `corpus_id` so a second
+source can be added without a migration — but only SRD 5.2.1 is targeted. See
+`docs/srd-content-corpus/vision.md`.
 
 **Design Tokens (theming).** The UI must be fully re-skinnable by end users, so no component
 may hardcode a color, font, or texture — everything resolves through design tokens. This

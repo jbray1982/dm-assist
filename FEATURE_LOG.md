@@ -23,9 +23,9 @@ Format: `- **[conviction | status]** **Name** — one-line description.`
   Blocks: Narrative Beat, NPC Development, Monster Upscaling & Modification
   Surfaced: project kickoff, 2026-07-12.
 
-- **[must-have | concept]** **SRD Content Corpus** — The ingested, queryable 5e SRD (monsters, spells, items, rules) that grounds every procedural and generative feature. Source: https://www.5esrd.com.
+- **[must-have | defined]** **SRD Content Corpus** — The SRD ingested as a fully structured domain model in SQLite (typed monsters, spells, items; rules as searchable prose) that grounds every procedural and generative feature, and the single provenance-tagged home for derived and homebrew stat blocks. Source: SRD 5.2.1 (2024 rules, CC-BY-4.0) via a vendored community markdown conversion; multi-corpus by architecture, single-corpus by intent.
   Blocks: Monster Upscaling & Modification, Equipment & Artifact Creation, Narrative Beat
-  Surfaced: project kickoff, 2026-07-12.
+  Surfaced: project kickoff, 2026-07-12. See: docs/srd-content-corpus/vision.md, docs/srd-content-corpus/001-mvp-spec.md, issues #3 (MVP), #4 (executable actions).
 
 - **[must-have | concept]** **Local Web Cockpit** — The browser UI the DM actually runs a session from; every feature surfaces through it. Local-first, single user.
   Blocks: Dungeon Drawing, Geography Tracking, Theming System
