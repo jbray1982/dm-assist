@@ -1,12 +1,12 @@
 # dm-assist
 
-A Dungeon Master's assistant for D&D 5e, grounded in the 5e SRD (https://www.5esrd.com). It
-runs locally in a browser and blends three kinds of capability: **procedural** (deterministic
-math and algorithms — dice, dungeon generation, CR math), **generative** (LLM-authored content —
-narrative beats, NPCs, monster variants), and **persistent** (a campaign world-state that is
-read back as planning context, not just written to). The design bet is that generative features
-must be grounded in procedural ones: the LLM calls real dice and real stat-block math rather
-than inventing numbers.
+A Dungeon Master's assistant for D&D 5e, grounded in the 5e SRD — specifically **SRD 5.2.1**
+(the 2024 rules, released under CC-BY-4.0). It runs locally in a browser and blends three kinds
+of capability: **procedural** (deterministic math and algorithms — dice, dungeon generation, CR
+math), **generative** (LLM-authored content — narrative beats, NPCs, monster variants), and
+**persistent** (a campaign world-state that is read back as planning context, not just written
+to). The design bet is that generative features must be grounded in procedural ones: the LLM
+calls real dice and real stat-block math rather than inventing numbers.
 
 ## Current features
 
@@ -58,4 +58,5 @@ TODOS.md               # backlog items not yet worth a GitHub issue
 
 - `CLAUDE.md` — architecture, cross-cutting design constraints, and workflow guidance.
 - `docs/dice-roller/` — vision and MVP spec for the dice roller.
+- `docs/srd-content-corpus/` — vision and MVP spec for the SRD corpus (specced, not yet built).
 - `FEATURE_LOG.md` — what concepts exist and where they stand.
