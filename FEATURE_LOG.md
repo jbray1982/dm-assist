@@ -68,6 +68,9 @@ Format: `- **[conviction | status]** **Name** — one-line description.`
 - **[probably-need | concept | blocked: SRD Content Corpus]** **Equipment & Artifact Creation** — Generate or roll items; procedural or generative depending on what is being made.
   Surfaced: project kickoff, 2026-07-12.
 
+- **[probably-need | concept | blocked: SRD Content Corpus]** **Homebrew Content Authoring** — The DM-facing surface for writing original content (a monster of their own, a custom item) directly into the corpus as `provenance: homebrew`. The *storage* is already settled — the corpus is the provenance-tagged home for everything stat-block-shaped, so a homebrew monster is a first-class record, not a second store. What is unsettled is whether authoring is its own feature at all, or simply falls out of Monster Upscaling's edit path once the DM can revise a generated variant before locking it to canon. Resolve when Monster Upscaling is specced; if it falls out for free, mark this `superseded → Monster Upscaling & Modification`.
+  Surfaced: srd-content-corpus spec, 2026-07-12. See: docs/srd-content-corpus/vision.md.
+
 - **[probably-need | concept | blocked: Geography Tracking]** **Outdoor Adventuring** — Overland travel and wilderness play. Shape undecided — likely a mix of algorithmic generation and LLM narration; the split is an open design question.
   Surfaced: project kickoff, 2026-07-12.
 
