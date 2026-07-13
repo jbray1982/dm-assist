@@ -25,6 +25,10 @@ session's rolls.
 - The "Scroll" theme (sepia, parchment) implemented through design tokens.
 - Solution scaffold: backend, frontend, test project, and the HTTP boundary between them.
 
+> **As-built:** the MVP UI also ships an optional reason input and a three-state
+> advantage/disadvantage toggle — diverged from planned exclusion of both from MVP scope
+> (product owner vetoed D3/D4 during implementation; see `handoffs/design-2.md` §10a).
+
 ## Out of Scope (for MVP)
 
 - **MCP exposure.** No LLM interaction exists anywhere in the product yet; a tool nobody calls
@@ -111,6 +115,11 @@ selector   := ('kh' | 'kl' | 'dh' | 'dl') [number]     // count defaults to 1
   on a die — to prevent a typo (`10000d20`) from hanging the UI. Exceeding a cap is an error.
 - Division by zero is an error.
 
+> **As-built:** cap and other semantic errors always carry a `position` pointing at the
+> offending token — diverged from the planned nullable-position case implied for violations
+> spanning the whole expression (see `handoffs/review-2.md`; `DiceExpressionException`'s doc
+> comment was amended to match).
+
 **Log**
 - Holds the most recent **100** rolls, newest first; older entries fall off.
 - A Clear action empties it. No confirmation.
@@ -123,6 +132,10 @@ integration surface the rest of the product builds on:
 
 - **Solution layout.** `src/DmAssist.Dice` (engine, no web dependencies), `src/DmAssist.Api`
   (ASP.NET Core), `tests/DmAssist.Dice.Tests`, `web/` (Vite + React + TS).
+
+  > **As-built:** an additional `tests/DmAssist.Api.Tests` project was added — diverged from
+  > the single test project named above, because log cap/clear behavior and the error contract
+  > live in the API host, not the engine (declared deviation; see `handoffs/design-2.md` §2).
 - **HTTP boundary.** JSON over HTTP. `POST /api/rolls` takes an expression and returns a
   `RollResult`; `GET /api/rolls` returns the log; `DELETE /api/rolls` clears it. Streaming
   (SSE) is not needed here — that arrives with the generative features.

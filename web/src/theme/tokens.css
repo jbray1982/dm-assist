@@ -1,0 +1,41 @@
+/*
+ * The Scroll theme's actual color and font values live ONLY in this file. Every other
+ * stylesheet or component reads these as semantic custom properties — never a raw hex, rgb(),
+ * or named color. This is enforced mechanically by stylelint (see .stylelintrc.json), which
+ * scopes its no-raw-color rules to everything except this file.
+ *
+ * Restyling the Scroll theme, or adding a second theme (e.g. "ALL RED" conformance, Ravenloft),
+ * means editing/duplicating this file's values only — no component should ever need to change.
+ */
+:root {
+  /* Surfaces */
+  --surface: #f5ecd7;
+  --surface-raised: #ede0c4;
+
+  /* Text */
+  --ink: #3b2a1a;
+  --ink-muted: #7a6a52;
+
+  /* Accents & state */
+  --accent: #8b5e34;
+  --border: #c9b691;
+  --focus: #b8860b;
+  --dropped: #a89f8d;
+  --error: #8b2e2e;
+
+  /* Type */
+  --font-body: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+  --font-display: Cinzel, 'Trajan Pro', Georgia, serif;
+
+  /* Spacing scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+
+  /* Radius scale */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+}

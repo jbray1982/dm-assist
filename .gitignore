@@ -23,3 +23,18 @@ harness
 
 # llm-academy pipeline handoffs — regenerated per run, not for version control
 handoffs/
+
+# .NET build output
+[Bb]in/
+[Oo]bj/
+*.user
+
+# Node / Vite
+web/node_modules/
+web/dist/
+web/.vite/
+
+# Editor/OS cruft
+.DS_Store
+.vs/
+.idea/
