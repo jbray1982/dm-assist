@@ -27,6 +27,20 @@ export interface SimpleRoll {
   advantage: AdvantageState;
 }
 
+/**
+ * What the builder shows when the expression names nothing yet (empty expression, so
+ * `parseSimple` returns null). Editing any field from here produces a real expression; until
+ * then these are only on screen, which is why an empty expression must never be treated as
+ * "the DM chose 1d6".
+ */
+export const DEFAULT_SIMPLE: SimpleRoll = { count: 1, sides: 6, modifier: 0, advantage: 'normal' };
+
+/** Engine limits, mirrored so the builder cannot emit an expression the server would reject. */
+export const MAX_COUNT = 1000;
+export const MAX_SIDES = 1000;
+/** Four digits is what the builder's fields accept, so the modifier cannot exceed it. */
+export const MAX_MODIFIER = 9999;
+
 /** Parses `expr` if it fits a builder-representable shape; otherwise returns `null`. */
 export function parseSimple(expr: string): SimpleRoll | null {
   const trimmed = expr.trim();

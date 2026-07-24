@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from 'react';
 import * as rollsClient from '../api/rollsClient';
-import { parseSimple, formatSimple, type SimpleRoll } from '../dice/simpleExpression';
+import { parseSimple, formatSimple, DEFAULT_SIMPLE, type SimpleRoll } from '../dice/simpleExpression';
 import { playRollSound } from '../audio/rollSound';
 import type { DiceError, RollResult } from '../api/rollsClient';
 
@@ -35,9 +35,11 @@ export interface UseRollerResult {
 
   /**
    * Whether the advantage/disadvantage toggle should be enabled. Advantage/disadvantage only has
-   * a defined meaning over a single die, so this is false whenever `simple` is null (advanced
-   * state) or `simple.count !== 1` — matching the other builder controls' disabled behavior
-   * rather than introducing a third state.
+   * a defined meaning over a single die, so this is false in the advanced state and whenever the
+   * count is not 1. An *empty* expression enables it: the builder is editable there (it shows
+   * `DEFAULT_SIMPLE`, whose count is 1), and toggling advantage is just another way to start an
+   * expression — the same as typing into a field. Disabling it there would make the toggle the
+   * only dead control on an otherwise live builder.
    */
   advantageEnabled: boolean;
 
@@ -80,7 +82,7 @@ export function useRoller(): UseRollerResult {
 
   const simple = useMemo(() => parseSimple(expression), [expression]);
   const isAdvanced = expression !== '' && simple === null;
-  const advantageEnabled = simple !== null && simple.count === 1;
+  const advantageEnabled = !isAdvanced && (simple ?? DEFAULT_SIMPLE).count === 1;
 
   const refetchLog = async () => {
     try {
@@ -100,8 +102,7 @@ export function useRoller(): UseRollerResult {
   }, []);
 
   const updateSimple = <K extends keyof SimpleRoll>(field: K, value: SimpleRoll[K]) => {
-    const current = simple || { count: 1, sides: 6, modifier: 0, advantage: 'normal' as const };
-    const updated = { ...current, [field]: value };
+    const updated = { ...(simple ?? DEFAULT_SIMPLE), [field]: value };
     setExpression(formatSimple(updated));
   };
 

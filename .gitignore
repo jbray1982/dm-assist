@@ -38,3 +38,6 @@ web/.vite/
 .DS_Store
 .vs/
 .idea/
+
+# Playwright MCP session artifacts (snapshots, console logs, screenshots)
+.playwright-mcp/

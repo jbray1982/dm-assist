@@ -38,4 +38,7 @@
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 1rem;
+
+  /* Elevation — for surfaces that float above the page (toasts, popovers, dialogs) */
+  --shadow-raised: 0 2px 8px rgb(0 0 0 / 15%);
 }

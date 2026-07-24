@@ -18,7 +18,8 @@ session's rolls.
 - Grammar: `NdX`, `+` `-` `*` `/`, parentheses, and keep/drop selectors (`kh` `kl` `dh` `dl`).
 - Structured roll results carrying every individual die face and its kept/dropped state.
 - Attribution and visibility fields on every roll (populated, but only one value used in MVP).
-- The builder UI (count / `D` / sides / `±` / modifier) driven by an on-screen number pad.
+- The builder UI (count / `D` / sides / `±` / modifier), whose fields can be typed into directly
+  or driven by an on-screen number pad.
 - An expression field, two-way bound to the builder, that accepts direct typed input.
 - A session roll log: bounded, in-memory, clearable.
 - A sound effect on roll.
@@ -101,6 +102,18 @@ selector   := ('kh' | 'kl' | 'dh' | 'dl') [number]     // count defaults to 1
 **Builder ↔ expression sync**
 - The expression string is the single source of truth. The builder is a view over it.
 - Editing a builder field regenerates the expression.
+- The one exception, and it is deliberately narrow: a field being typed into passes through
+  states no expression can hold (`""` while cleared, `"0"` before the next digit), so the panel
+  holds a transient edit buffer for the focused field alone. Every parseable keystroke commits to
+  the expression immediately, and the buffer is dropped on blur. It is a keystroke carrier, not a
+  second copy of the roll — an empty expression must never be read as "the DM chose 1d6".
+- The number pad and the keyboard write through that same buffer, so neither can append digits to
+  a default the DM never chose (pressing `C` then `4` yields `4d6`, not `14d6`).
+- `2dXkh1` / `2dXkl1` are the advantage sugar forms, **not** advanced expressions: they parse back
+  to one die rolled twice, so the builder stays live for them. But `formatSimple` drops `count`
+  whenever advantage is on, so the count field locks (and says why) while the toggle is set —
+  otherwise it would accept a number and silently discard it. Every write path honors the lock,
+  the number pad included; a control that refuses an edit must refuse it from every direction.
 - Typing a valid expression that fits the `NdX±M` shape re-populates the builder fields.
 - Typing a valid expression the builder **cannot** represent (`4d6kh3`, `(2d6+3)*2`) puts the
   builder into a disabled **advanced expression** state — visibly greyed out, indicating the
@@ -174,6 +187,8 @@ expensive to retrofit.
 - [ ] Invalid syntax, `0d6`, `2d0`, `2d6kh3`, division by zero, and rolls exceeding the 1000-dice
       or 1000-sides caps all produce errors and log nothing.
 - [ ] A DM can build a roll with the number pad and roll it.
+- [ ] A DM can type `27` straight into the builder's count field; pressing `C` then `4` gives
+      `4d6`, not `14d6`.
 - [ ] Typing `27d3+4` into the expression field populates the builder fields.
 - [ ] Typing `4d6kh3` disables the builder into the advanced-expression state; the roll still works.
 - [ ] Results display every die face, with dropped dice struck through, alongside the total.
