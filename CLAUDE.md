@@ -17,8 +17,24 @@ calls real dice and real stat-block math via MCP rather than inventing numbers.
 
 ## Current state
 
-**Greenfield — no application code exists yet.** There is no build, test, or run command
-to document. When the first scaffold lands, add its commands to this file.
+The dice roller MVP (issue #2) is implemented: a standalone `DmAssist.Dice` engine library
+(tokenizer → parser → AST → evaluator, zero web-framework dependency), an ASP.NET Core API
+(`DmAssist.Api`) exposing `/api/rolls`, and a Vite/React/TypeScript frontend (`web/`) with the
+DM builder, expression field, advantage/disadvantage toggle, roll log, and Scroll theme. See
+`docs/dice-roller/001-mvp-spec.md` for the contract.
+
+Build / test / run:
+
+```
+dotnet build DmAssist.sln                 # whole solution
+dotnet test                               # DmAssist.Dice.Tests + DmAssist.Api.Tests
+dotnet run --project src/DmAssist.Api     # API on http://localhost:5178
+cd web && npm install
+npm run dev                               # Vite dev server, /api proxied to :5178
+npm run build                             # tsc + vite build
+npm run test                              # Vitest
+npm run lint                              # eslint + stylelint (design-token enforcement)
+```
 
 The design surface lives in `FEATURE_LOG.md` (every named concept and its status).
 Work not yet promoted to a GitHub issue lives in `TODOS.md`.

@@ -1,0 +1,21 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "color-no-hex": true,
+    "color-named": "never",
+    "declaration-property-value-disallowed-list": {
+      "/.*/": ["/^rgb\\(/", "/^rgba\\(/", "/^hsl\\(/", "/^hsla\\(/"]
+    },
+    "value-keyword-case": ["lower", { "ignoreProperties": ["--font-body", "--font-display", "font-family"] }]
+  },
+  "overrides": [
+    {
+      "files": ["src/theme/tokens.css"],
+      "rules": {
+        "color-no-hex": null,
+        "color-named": null,
+        "declaration-property-value-disallowed-list": null
+      }
+    }
+  ]
+}

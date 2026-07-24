@@ -1,0 +1,29 @@
+@import url('./theme/tokens.css');
+
+/*
+ * Base reset. No raw colors here — everything resolves through the tokens imported above.
+ * stylelint enforces this for every stylesheet except tokens.css itself.
+ */
+:root {
+  color-scheme: light;
+  font-family: var(--font-body);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+#root {
+  min-height: 100svh;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  color: var(--ink);
+}

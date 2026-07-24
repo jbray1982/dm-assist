@@ -36,8 +36,8 @@ Format: `- **[conviction | status]** **Name** — one-line description.`
 
 ## Features
 
-- **[must-have | defined]** **Dice Roller** — One roll engine behind three front doors (DM builder, stat-block click, MCP tool), one attributed log, every result auditable. Purely procedural; the first vertical slice, and the walking skeleton for the whole product. MVP covers the DM builder only.
-  Surfaced: project kickoff, 2026-07-12. See: docs/dice-roller/vision.md, docs/dice-roller/001-mvp-spec.md.
+- **[must-have | partially-live]** **Dice Roller** — One roll engine behind three front doors (DM builder, stat-block click, MCP tool), one attributed log, every result auditable. Purely procedural; the first vertical slice, and the walking skeleton for the whole product. The MVP shipped the DM builder; the stat-block and MCP front doors remain.
+  Surfaced: project kickoff, 2026-07-12. See: docs/dice-roller/vision.md, docs/dice-roller/001-mvp-spec.md, issue #2.
 
 - **[must-have | concept | blocked: Human-in-the-Loop Approval Gate]** **Narrative Beat** — Generative story-beat proposals the DM must accept before they lock into campaign canon.
   Surfaced: project kickoff, 2026-07-12.

@@ -18,12 +18,17 @@ session's rolls.
 - Grammar: `NdX`, `+` `-` `*` `/`, parentheses, and keep/drop selectors (`kh` `kl` `dh` `dl`).
 - Structured roll results carrying every individual die face and its kept/dropped state.
 - Attribution and visibility fields on every roll (populated, but only one value used in MVP).
-- The builder UI (count / `D` / sides / `±` / modifier) driven by an on-screen number pad.
+- The builder UI (count / `D` / sides / `±` / modifier), whose fields can be typed into directly
+  or driven by an on-screen number pad.
 - An expression field, two-way bound to the builder, that accepts direct typed input.
 - A session roll log: bounded, in-memory, clearable.
 - A sound effect on roll.
 - The "Scroll" theme (sepia, parchment) implemented through design tokens.
 - Solution scaffold: backend, frontend, test project, and the HTTP boundary between them.
+
+> **As-built:** the MVP UI also ships an optional reason input and a three-state
+> advantage/disadvantage toggle — diverged from planned exclusion of both from MVP scope
+> (product owner vetoed D3/D4 during implementation; see `handoffs/design-2.md` §10a).
 
 ## Out of Scope (for MVP)
 
@@ -97,6 +102,18 @@ selector   := ('kh' | 'kl' | 'dh' | 'dl') [number]     // count defaults to 1
 **Builder ↔ expression sync**
 - The expression string is the single source of truth. The builder is a view over it.
 - Editing a builder field regenerates the expression.
+- The one exception, and it is deliberately narrow: a field being typed into passes through
+  states no expression can hold (`""` while cleared, `"0"` before the next digit), so the panel
+  holds a transient edit buffer for the focused field alone. Every parseable keystroke commits to
+  the expression immediately, and the buffer is dropped on blur. It is a keystroke carrier, not a
+  second copy of the roll — an empty expression must never be read as "the DM chose 1d6".
+- The number pad and the keyboard write through that same buffer, so neither can append digits to
+  a default the DM never chose (pressing `C` then `4` yields `4d6`, not `14d6`).
+- `2dXkh1` / `2dXkl1` are the advantage sugar forms, **not** advanced expressions: they parse back
+  to one die rolled twice, so the builder stays live for them. But `formatSimple` drops `count`
+  whenever advantage is on, so the count field locks (and says why) while the toggle is set —
+  otherwise it would accept a number and silently discard it. Every write path honors the lock,
+  the number pad included; a control that refuses an edit must refuse it from every direction.
 - Typing a valid expression that fits the `NdX±M` shape re-populates the builder fields.
 - Typing a valid expression the builder **cannot** represent (`4d6kh3`, `(2d6+3)*2`) puts the
   builder into a disabled **advanced expression** state — visibly greyed out, indicating the
@@ -111,6 +128,11 @@ selector   := ('kh' | 'kl' | 'dh' | 'dl') [number]     // count defaults to 1
   on a die — to prevent a typo (`10000d20`) from hanging the UI. Exceeding a cap is an error.
 - Division by zero is an error.
 
+> **As-built:** cap and other semantic errors always carry a `position` pointing at the
+> offending token — diverged from the planned nullable-position case implied for violations
+> spanning the whole expression (see `handoffs/review-2.md`; `DiceExpressionException`'s doc
+> comment was amended to match).
+
 **Log**
 - Holds the most recent **100** rolls, newest first; older entries fall off.
 - A Clear action empties it. No confirmation.
@@ -123,6 +145,10 @@ integration surface the rest of the product builds on:
 
 - **Solution layout.** `src/DmAssist.Dice` (engine, no web dependencies), `src/DmAssist.Api`
   (ASP.NET Core), `tests/DmAssist.Dice.Tests`, `web/` (Vite + React + TS).
+
+  > **As-built:** an additional `tests/DmAssist.Api.Tests` project was added — diverged from
+  > the single test project named above, because log cap/clear behavior and the error contract
+  > live in the API host, not the engine (declared deviation; see `handoffs/design-2.md` §2).
 - **HTTP boundary.** JSON over HTTP. `POST /api/rolls` takes an expression and returns a
   `RollResult`; `GET /api/rolls` returns the log; `DELETE /api/rolls` clears it. Streaming
   (SSE) is not needed here — that arrives with the generative features.
@@ -161,6 +187,8 @@ expensive to retrofit.
 - [ ] Invalid syntax, `0d6`, `2d0`, `2d6kh3`, division by zero, and rolls exceeding the 1000-dice
       or 1000-sides caps all produce errors and log nothing.
 - [ ] A DM can build a roll with the number pad and roll it.
+- [ ] A DM can type `27` straight into the builder's count field; pressing `C` then `4` gives
+      `4d6`, not `14d6`.
 - [ ] Typing `27d3+4` into the expression field populates the builder fields.
 - [ ] Typing `4d6kh3` disables the builder into the advanced-expression state; the roll still works.
 - [ ] Results display every die face, with dropped dice struck through, alongside the total.
